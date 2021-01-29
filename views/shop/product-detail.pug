@@ -1,0 +1,14 @@
+extends ../layout/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/shop.css")
+
+block content
+     .card
+            img.card-img-top.shopimg(src= `${prod.imageURL}`, alt="Book Image")
+            .card-body
+                h5.card-title #{prod.title}
+                p.card-text #{prod.author}
+                p.card-text #{prod.price}
+                p.card-text #{prod.description}
+        

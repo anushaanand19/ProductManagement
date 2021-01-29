@@ -1,0 +1,17 @@
+extends ../layout/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/admin.css")
+    link(rel="stylesheet", href="/shop.css")
+
+block content
+    .cards
+        .card
+            img.card-img-top.shopimg(src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80", alt="Book Image")
+            .card-body
+                a(href="/admin/edit-delete-product") Edit Product
+        .card
+            img.card-img-top.shopimg(src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80", alt="Book Image")
+            .card-body
+                a(href="/admin/add-product") Add Product
+        

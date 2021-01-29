@@ -1,0 +1,100 @@
+.admin {
+  width: 700px;
+  margin: auto;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  flex-basis: content;
+  border-radius: 12px;
+}
+
+.admin img {
+  height: 450px;
+  width: 300px;
+  border-radius: 16px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.flow-container {
+  height: 450px;
+  width: 400px;
+  border-radius: 16px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  /* padding: 16px; */
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 16px;
+}
+
+.row:first-child {
+  padding-top: 16px;
+}
+
+.column {
+  padding: 8px;
+  width: 50%;
+}
+
+.column-full {
+  width: 100%;
+}
+
+.column label {
+  margin-bottom: 4px;
+  color: #333333;
+}
+
+.column input,
+textarea {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  outline: none;
+  width: 100%;
+}
+.display-text {
+  color: #2c3e50;
+}
+.addbtn {
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  padding: 8px 0;
+  background-color: #48dbfb;
+  border: #48dbfb;
+  color: #2c3e50;
+  /* margin-top: auto; */
+  margin: auto;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.actions a {
+  margin: 0 8px 0 0;
+}
+.addname {
+  width: 150px;
+}
+.addprice {
+  width: 50px;
+}

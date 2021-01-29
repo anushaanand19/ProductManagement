@@ -1,0 +1,25 @@
+extends ../layout/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/shop.css")
+
+block content
+    if products.length > 0 
+        .cards            
+            each prod in products
+                .card
+                    img.card-img-top.shopimg(src= `${prod.imageURL}`, alt="Book Image")
+                    .card-body
+                        h5.card-title #{prod.title}
+                        p.card-text #{prod.author}
+                        p.card-text #{prod.price}
+                        a(href=`/product/${prod._id}`)
+                            button.btn.btn-success(type="submit") Details
+                        -if(loggedIn)
+                            -var cpIDs = cartProductIDs.map(cartproduct=> cartproduct.productID.toString());
+                            -if (cpIDs.includes(`${prod._id}`))
+                                a(href=`/postCart/${prod._id}`)
+                                    button.btn.btn-success(type="submit") Add Another
+                            -else
+                                a(href=`/postCart/${prod._id}`)
+                                    button.btn.btn-success(type="submit") Add to Cart

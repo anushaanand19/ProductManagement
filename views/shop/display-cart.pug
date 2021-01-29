@@ -1,0 +1,38 @@
+extends ../layout/main-layout 
+
+block styles
+    link(rel="stylesheet", href="shop.css")
+
+block content 
+    if cartItems.length > 0
+        .container.align-items-center.p-5
+            .row.align-items-start.text-center
+                h5.p-3.col.border.border-success Title
+                h5.p-3.col.border.border-success Price
+                h5.p-3.col.border.border-success Quantity
+            -var totalPrice = 0, totalQuantity = 0;
+            each cartItem in cartItems
+                .row.align-items-start.text-center
+                    p.p-3.col.border.border-success #{cartItem.productID.title}
+                    - var totalProductPrice = `${cartItem.productID.price}` * `${cartItem.quantity}`
+                    - totalPrice += totalProductPrice
+                    p.p-3.col.border.border-success #{totalProductPrice}
+                    - totalQuantity += parseInt(`${cartItem.quantity}`)
+                    p.p-3.col.border.border-success
+                        a.list.text-dark.px-2.mx-2.border.border-success(href=`/deleteFromCart/${cartItem._id}`, ) -
+                        span.px-2.mx-2 #{cartItem.quantity}
+                        a.list.text-dark.px-2.mx-2.border.border-success(href=`/postCart/${cartItem.productID._id}`, ) +
+            .row.align-items-start.text-center
+                    h5.p-3.col Total Price : #{totalPrice}
+
+            a.d-flex.justify-content-center.list(href=`/order`)
+                button.btn.btn-success(type="submit") Order
+    else
+        .container.align-items-center.p-5.d-flex.justify-content-center.my-4.flex-column
+            h1.my-5 No items in Cart.
+            a.d-block.justify-content-center.list(href=`/`)
+                button.btn.btn-success(type="submit") Shop Now
+
+    
+               
+                

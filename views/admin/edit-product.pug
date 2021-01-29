@@ -1,0 +1,31 @@
+extends ../layout/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/admin.css")
+
+block content
+    .main-content 
+        form(action='/admin/edit/'+prod._id , method="post")
+            .forms
+                .form-group.row
+                    .col-sm-4.col-form-label.label Title
+                    .col-md-8
+                        input.form-control(type="text", name="title", value = `${prod.title}`) 
+                .form-group.row
+                    .col-sm-4.col-form-label.label Author
+                    .col-md-8
+                        input.form-control(type="text", name="author", value = `${prod.author}`) 
+                .form-group.row
+                    .col-sm-4.col-form-label.label Price 
+                    .col-md-8
+                        input.form-control(type="text", name="price", value = `${prod.price}`) 
+                .form-group.row
+                    .col-sm-4.col-form-label.label Image 
+                    .col-md-8
+                        input.form-control(type="text", name="image" , value = `${prod.imageURL}`)
+                .form-group.row
+                    .col-sm-4.col-form-label.label Description 
+                    .col-md-8
+                        textarea.form-control(name="description", cols="30", rows="4") #{prod.description}
+                        input.form-control(type="hidden", name="id", value = `${prod._id}`)
+            button.btn.btn-success(type="submit" ) Submit

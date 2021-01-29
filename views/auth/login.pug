@@ -1,0 +1,18 @@
+extends ../layout/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/admin.css")
+
+block content
+    .main-content 
+        form(action="/login", method="post")
+            .form-group.row
+                .col-sm-6.col-form-label Email
+                .col-sm-12
+                    input.form-control(type="text", name="email") 
+            .form-group.row
+                .col-sm-6.col-form-label Password
+                .col-sm-12
+                    input.form-control(type="password", name="password") 
+            button.btn.btn-success.d-flex.justify-content-center.mt-4(type="submit" ) Login
+

@@ -1,0 +1,27 @@
+extends ../layout/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/admin.css")
+
+block content
+    .main-content 
+        form(action="/signup", method="post")
+            .form-group.row
+                .col.col-form-label First Name
+                    input.form-control(type="text", name="firstName") 
+                .col.col-form-label Last Name
+                    input.form-control(type="text", name="lastName") 
+            .form-group.row
+                .col-sm-6.col-form-label Email
+                .col-sm-12
+                    input.form-control(type="text", name="email") 
+            .form-group.row
+                .col-sm-6.col-form-label Password
+                .col-sm-12
+                    input.form-control(type="password", name="password") 
+            .form-group.row
+                .col-sm-6.col-form-label Confirm Password
+                .col-sm-12
+                    input.form-control(type="password", name="confirmedPwd") 
+            button.btn.btn-success.d-flex.justify-content-center.mt-4(type="submit" ) Signup
+

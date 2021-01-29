@@ -1,0 +1,19 @@
+extends ../layout/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/shop.css")
+
+block content
+    if products.length > 0 
+        .cards            
+            each prod in products
+                .card
+                    img.card-img-top.shopimg(src= `${prod.imageURL}`, alt="Book Image")
+                    .card-body
+                        h5.card-title #{prod.title}
+                        p.card-text #{prod.author}
+                        p.card-text #{prod.price}
+                        a(href=`/admin/edit/${prod._id}`)
+                            button.btn.btn-success(type="submit") Edit
+                        a(href=`/admin/delete/${prod._id}`)
+                            button.btn.btn-success(type="submit") Delete
