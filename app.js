@@ -10,14 +10,14 @@ const mongodb = require("mongodb");
 const session = require("express-session");
 const mongoDBStore = require("connect-mongodb-session")(session);
 const User = require("./model/user");
-const MONGODB_URI =
-  "mongodb+srv://anusha:rPZnIVEgT4KMFZFu@cluster0.tem0q.mongodb.net/shop?authSource=admin&replicaSet=Cluster0-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&ssl=true";
+require("dotenv").config();
+
+const MONGODB_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/shop?authSource=admin&replicaSet=Cluster0-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&ssl=true`;
 
 const store = new mongoDBStore({
   uri: MONGODB_URI,
   collection: "session",
 });
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
