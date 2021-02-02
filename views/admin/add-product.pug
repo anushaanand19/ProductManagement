@@ -27,4 +27,5 @@ block content
                     .col-sm-4.col-form-label.label Description 
                     .col-md-8
                         textarea.form-control(name="description", cols="30", rows="4")
+                        input(type="hidden", name="_csrf" value = `${csrfToken}`)
             button.btn.btn-success(type="submit" ) Submit

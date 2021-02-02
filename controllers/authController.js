@@ -7,7 +7,6 @@ exports.getlogin = (req, res, next) => {
   req.session.user = null;
   res.render("../views/auth/login.pug", {
     title: "Login",
-    loggedIn: req.session.isLoggedIn,
   });
 };
 
@@ -40,7 +39,6 @@ exports.getSignUp = (req, res, next) => {
   req.session.user = null;
   res.render("../views/auth/signup.pug", {
     title: "SignUp",
-    loggedIn: req.session.isLoggedIn,
   });
 };
 

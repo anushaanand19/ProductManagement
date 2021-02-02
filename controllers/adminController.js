@@ -4,7 +4,7 @@ const Product = require("../model/product");
 exports.getMainAdminPage = (req, res, next) => {
   res.render("../views/admin/main-admin.pug", {
     title: "Admin Page",
-    loggedIn: req.session.isLoggedIn,
+    
   });
 };
 
@@ -14,7 +14,7 @@ exports.getEditAndDeleteProducts = (req, res, next) => {
       res.render("../views/admin/edit-delete.pug", {
         products: products,
         title: "Edit products",
-        loggedIn: req.session.isLoggedIn,
+      
       });
     })
     .catch((err) => console.log(err));
@@ -26,7 +26,7 @@ exports.getEditProduct = (req, res, next) => {
     res.render("../views/admin/edit-product.pug", {
       title: "Edit Product",
       prod: product,
-      loggedIn: req.session.isLoggedIn,
+      
     });
   });
 };
@@ -34,7 +34,7 @@ exports.getEditProduct = (req, res, next) => {
 exports.getAddProduct = (req, res, next) => {
   res.render("../views/admin/add-product.pug", {
     title: "Admin Page",
-    loggedIn: req.session.isLoggedIn,
+    
   });
 };
 

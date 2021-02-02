@@ -11,7 +11,6 @@ exports.getShopProducts = (req, res, next) => {
       res.render("../views/shop/shop.pug", {
         title: "Shop",
         products: products,
-        loggedIn: req.session.isLoggedIn,
         cartProductIDs: cartProducts,
       });
     })
@@ -24,7 +23,6 @@ exports.getProductDetails = (req, res, next) => {
     .then((product) => {
       res.render("../views/shop/product-detail.pug", {
         prod: product,
-        loggedIn: req.session.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -39,24 +37,8 @@ exports.getCartItems = (req, res, next) => {
       res.render("../views/shop/display-cart.pug", {
         cartItems: products,
         title: "Cart",
-        loggedIn: req.session.isLoggedIn,
       });
     });
-  //
-  // }
-  // req.user
-  //   .getCart()
-  //   .then((cart) => {
-  //     return cart.getProducts();
-  //   })
-  //   .then((products) => {
-  //     res.render("cart/cart.pug", {
-  //       products: products,
-  //       title: "Cart",
-  //       loggedIn: req.session.isLoggedIn,
-  //     });
-  //   })
-  //   .catch((err) => console.log(err));
 };
 
 exports.addCartItems = (req, res, next) => {
@@ -69,28 +51,4 @@ exports.addCartItems = (req, res, next) => {
       console.log("Added to cart");
       res.redirect("/cart");
     });
-  //     return cart.getProducts({ where: { id: prodID } });
-  //   })
-  //   .then((products) => {
-  //     if (products.length > 0) {
-  //       product = products[0];
-  //     }
-  //     if (product) {
-  //       let oldQuantity = product.cartItem.Quantity;
-  //       newQuantity = oldQuantity + 1;
-  //       return product;
-  //     }
-  //     return Product.findByPk(prodID);
-  //   })
-  //   .then((product) => {
-  //     fetchedCart
-  //       .addProduct(product, {
-  //         through: { Quantity: newQuantity },
-  //       })
-  //       .then((result) => {
-  //         res.redirect("/cart");
-  //       })
-  //       .catch((err) => console.log(err));
-  //   })
-  //   .catch((err) => console.log(err));
 };

@@ -51,5 +51,6 @@ userSchema.methods.getCart = function () {
   return this.cart.items;
 };
 
+userSchema.methods.deleteFromCart = function (prodID) {};
 userSchema.plugin(uniqueValidator);
 module.exports = mongoose.model("User", userSchema);

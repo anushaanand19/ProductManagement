@@ -6,10 +6,12 @@ const adminRouter = require("./routes/adminRoute");
 const shopRouter = require("./routes/shopRoute");
 const authRouter = require("./routes/authRoute");
 const mongoose = require("mongoose");
-const mongodb = require("mongodb");
 const session = require("express-session");
 const mongoDBStore = require("connect-mongodb-session")(session);
 const User = require("./model/user");
+const csurf = require("csurf");
+const csrfProtection = csurf();
+const flashMessage = require("connect-flash");
 require("dotenv").config();
 
 const MONGODB_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/shop?authSource=admin&replicaSet=Cluster0-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&ssl=true`;
@@ -28,6 +30,9 @@ app.use(
     store: store,
   })
 );
+
+app.use(csrfProtection);
+app.use(flashMessage());
 app.use((req, res, next) => {
   if (req.session.user) {
     User.findById(req.session.user._id)
@@ -39,6 +44,11 @@ app.use((req, res, next) => {
   } else {
     next();
   }
+});
+app.use((req, res, next) => {
+  res.locals.loggedIn = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next();
 });
 app.set("view engine", "pug");
 app.set("views", "views");

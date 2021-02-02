@@ -23,6 +23,7 @@ html(lang="en")
                         a.list(href="/admin") Admin
                     li.list-item.p-2.ml-auto
                         form(action="/logout", method="post")
+                            input(type="hidden", name="_csrf" value = `${csrfToken}`)
                             button.btn.list.item(type="submit") Logout
 
                 else
