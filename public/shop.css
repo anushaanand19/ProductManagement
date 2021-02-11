@@ -5,8 +5,7 @@
   flex-flow: row wrap;
 }
 .card {
-  height: 400px;
-  width: 400px;
+  width: 20rem;
   margin: 12px auto;
 }
 .btn {

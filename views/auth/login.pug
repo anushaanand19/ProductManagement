@@ -4,11 +4,10 @@ block styles
     link(rel="stylesheet", href="/admin.css")
 
 block content
-    .main-content 
+    .main-content.d-flex
         form(action="/login", method="post")
             .form-group.row
                 .col-sm-6.col-form-label Email
-                -console.log('login page',csrfToken);
                 .col-sm-12
                     input.form-control(type="text", name="email") 
             .form-group.row
@@ -16,5 +15,9 @@ block content
                 .col-sm-12
                     input.form-control(type="password", name="password") 
                     input(type="hidden", name="_csrf" value = `${csrfToken}`)
-            button.btn.btn-success.d-flex.justify-content-center.mt-4(type="submit" ) Login
+            div.d-flex.mt-4
+                button.btn.btn-success(type="submit" ) Login
+                a.btn.btn-success(href="/reset-password") Forgot Password
+            if(errorMessage.length > 0) 
+                div.mt-4.text-center.text-danger #{errorMessage[0]}
 

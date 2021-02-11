@@ -48,6 +48,8 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.locals.loggedIn = req.session.isLoggedIn;
   res.locals.csrfToken = req.csrfToken();
+  res.locals.errorMessage = req.flash("error");
+  res.locals.infoMessage = req.flash("information");
   next();
 });
 app.set("view engine", "pug");

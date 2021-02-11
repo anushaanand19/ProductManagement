@@ -4,7 +4,7 @@ block styles
     link(rel="stylesheet", href="/admin.css")
 
 block content
-    .main-content 
+    .main-content.d-flex
         form(action="/signup", method="post")
             .form-group.row
                 .col.col-form-label First Name
@@ -14,7 +14,7 @@ block content
             .form-group.row
                 .col-sm-6.col-form-label Email
                 .col-sm-12
-                    input.form-control(type="text", name="email") 
+                    input.form-control(type="text", name="email")
             .form-group.row
                 .col-sm-6.col-form-label Password
                 .col-sm-12
@@ -22,6 +22,10 @@ block content
             .form-group.row
                 .col-sm-6.col-form-label Confirm Password
                 .col-sm-12
-                    input.form-control(type="password", name="confirmedPwd") 
-            button.btn.btn-success.d-flex.justify-content-center.mt-4(type="submit" ) Signup
+                    input.form-control(type="password", name="confirmedPwd")
+                    input(type="hidden", name="_csrf" value = `${csrfToken}`) 
+            div.d-flex.mt-4
+                button.btn.btn-success(type="submit" ) Signup
+            if(errorMessage.length > 0) 
+                div.mt-4.text-center.text-danger #{errorMessage[0]}
 

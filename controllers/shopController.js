@@ -18,11 +18,17 @@ exports.getShopProducts = (req, res, next) => {
 };
 
 exports.getProductDetails = (req, res, next) => {
+  let cartProducts = [];
+  if (req.session.user) {
+    cartProducts = req.user.cart.items;
+  }
   const productId = req.params.productID;
   Product.findById(productId)
     .then((product) => {
       res.render("../views/shop/product-detail.pug", {
         prod: product,
+        cartProductIDs: cartProducts,
+        title: "Product Details",
       });
     })
     .catch((err) => console.log(err));
