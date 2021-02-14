@@ -5,6 +5,8 @@ block styles
 
 block content
     if products.length > 0 
+        if(errorMessage.length > 0) 
+            div.text-center.text-danger #{errorMessage[0]}
         .cards            
             each prod in products
                 .card
@@ -23,3 +25,5 @@ block content
                             -else
                                 a(href=`/postCart/${prod._id}`)
                                     button.btn.btn-success(type="submit") Add to Cart
+    else
+        h1.d-flex.justify-content-center.mt-4 No Products found

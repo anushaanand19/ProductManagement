@@ -49,10 +49,28 @@ userSchema.methods.addToCart = function (product) {
   return this.save();
 };
 
-userSchema.methods.getCart = function () {
-  return this.cart.items;
+userSchema.methods.getCart = function (productIDs) {
+  let cartItems = this.cart.items;
+  let updatedCartItems = cartItems.filter((cp) => {
+    return productIDs.toString().includes(cp.productID.toString());
+  });
+  this.cart.items = updatedCartItems;
+  return this.save();
 };
 
-userSchema.methods.deleteFromCart = function (prodID) {};
+userSchema.methods.deleteFromCart = function (prodID) {
+  let cartItems = this.cart.items,
+    newQuantity = 1;
+  let cartPrdIndex = cartItems.findIndex((cp) => {
+    return cp.productID.toString() === prodID.toString();
+  });
+  if (cartItems[cartPrdIndex].quantity > 1) {
+    cartItems[cartPrdIndex].quantity--;
+  } else {
+    cartItems.splice(cartPrdIndex, 1);
+  }
+  this.cart.items = cartItems;
+  return this.save();
+};
 userSchema.plugin(uniqueValidator);
 module.exports = mongoose.model("User", userSchema);

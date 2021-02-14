@@ -4,28 +4,27 @@ block styles
     link(rel="stylesheet", href="/admin.css")
 
 block content
-    .main-content 
+    .main-content.d-flex
         form(action="/admin/products", method="post")
-            .forms
-                .form-group.row
-                    .col-sm-4.col-form-label.label Title
-                    .col-md-8
-                        input.form-control(type="text", name="title") 
-                .form-group.row
-                    .col-sm-4.col-form-label.label Author
-                    .col-md-8
-                        input.form-control(type="text", name="author") 
-                .form-group.row
-                    .col-sm-4.col-form-label.label Price 
-                    .col-md-8
-                        input.form-control(type="text", name="price") 
-                .form-group.row
-                    .col-sm-4.col-form-label.label Image 
-                    .col-md-8
-                        input.form-control(type="text", name="image")
-                .form-group.row
-                    .col-sm-4.col-form-label.label Description 
-                    .col-md-8
-                        textarea.form-control(name="description", cols="30", rows="4")
-                        input(type="hidden", name="_csrf" value = `${csrfToken}`)
-            button.btn.btn-success(type="submit" ) Submit
+            .form-group.row
+                .col-sm-4.col-form-label Title
+                .col-sm-8
+                    input.form-control(type="text", name="title") 
+            .form-group.row
+                .col-sm-4.col-form-label Author
+                .col-sm-8
+                    input.form-control(type="text", name="author") 
+            .form-group.row
+                .col-sm-4.col-form-label Price 
+                .col-md-8
+                    input.form-control(type="text", name="price") 
+            .form-group.row
+                .col-sm-4.col-form-label Image 
+                .col-md-8
+                    input.form-control(type="text", name="image")
+            .form-group.row
+                .col-sm-4.col-form-label Description 
+                .col-md-8
+                    textarea.form-control(name="description", cols="30", rows="4")
+                    input(type="hidden", name="_csrf" value = `${csrfToken}`)
+            button.btn.btn-success.d-flex.mt-4(type="submit" ) Submit

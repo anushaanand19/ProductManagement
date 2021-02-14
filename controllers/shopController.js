@@ -35,16 +35,24 @@ exports.getProductDetails = (req, res, next) => {
 };
 
 exports.getCartItems = (req, res, next) => {
-  req.user
-    .populate("cart.items.productID")
-    .execPopulate()
-    .then((users) => {
-      const products = users.cart.items;
+  Product.find()
+    .then((products) => {
+      return (prdID = products.map((prds) => prds._id));
+    })
+    .then((productIDs) => {
+      return req.user.getCart(productIDs);
+    })
+    .then((user) => {
+      return user.populate("cart.items.productID").execPopulate();
+    })
+    .then((userWithPopulatedProduct) => {
+      const products = userWithPopulatedProduct.cart.items;
       res.render("../views/shop/display-cart.pug", {
         cartItems: products,
         title: "Cart",
       });
-    });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.addCartItems = (req, res, next) => {
@@ -55,6 +63,14 @@ exports.addCartItems = (req, res, next) => {
     })
     .then((result) => {
       console.log("Added to cart");
-      res.redirect("/cart");
+      res.redirect("/");
     });
+};
+
+exports.deleteFromCart = (req, res, next) => {
+  const prodID = req.params.productID;
+  req.user.deleteFromCart(prodID).then(() => {
+    console.log("Deleted from cart");
+    res.redirect("/cart");
+  });
 };

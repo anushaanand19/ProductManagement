@@ -19,7 +19,7 @@ block content
                     p.p-3.col.border.border-success #{totalProductPrice}
                     - totalQuantity += parseInt(`${cartItem.quantity}`)
                     p.p-3.col.border.border-success
-                        a.list.text-dark.px-2.mx-2.border.border-success(href=`/deleteFromCart/${cartItem._id}`, ) -
+                        a.list.text-dark.px-2.mx-2.border.border-success(href=`/deleteFromCart/${cartItem.productID._id}`, ) -
                         span.px-2.mx-2 #{cartItem.quantity}
                         a.list.text-dark.px-2.mx-2.border.border-success(href=`/postCart/${cartItem.productID._id}`, ) +
             .row.align-items-start.text-center

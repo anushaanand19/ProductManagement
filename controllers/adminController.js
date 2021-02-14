@@ -1,20 +1,12 @@
 const mongoDB = require("mongodb");
 const Product = require("../model/product");
 
-exports.getMainAdminPage = (req, res, next) => {
-  res.render("../views/admin/main-admin.pug", {
-    title: "Admin Page",
-    
-  });
-};
-
 exports.getEditAndDeleteProducts = (req, res, next) => {
-  Product.find()
+  Product.find({ userID: req.user._id })
     .then((products) => {
       res.render("../views/admin/edit-delete.pug", {
         products: products,
         title: "Edit products",
-      
       });
     })
     .catch((err) => console.log(err));
@@ -22,19 +14,20 @@ exports.getEditAndDeleteProducts = (req, res, next) => {
 
 exports.getEditProduct = (req, res, next) => {
   const prodID = req.params.productID;
-  Product.findById({ _id: new mongoDB.ObjectID(prodID) }).then((product) => {
+  Product.findOne({
+    _id: new mongoDB.ObjectID(prodID),
+    userID: req.user._id,
+  }).then((product) => {
     res.render("../views/admin/edit-product.pug", {
       title: "Edit Product",
       prod: product,
-      
     });
   });
 };
 
 exports.getAddProduct = (req, res, next) => {
   res.render("../views/admin/add-product.pug", {
-    title: "Admin Page",
-    
+    title: "Add Product",
   });
 };
 
@@ -69,8 +62,11 @@ exports.setEditProduct = (req, res, next) => {
   const imageURL = req.body.image;
   const description = req.body.description;
   const userID = req.user;
-  Product.findById(id)
+  Product.findOne({ _id: id, userID: req.user._id })
     .then((product) => {
+      if (req.user._id.toString() !== product.userID) {
+        throw "You do not have rights to modify";
+      }
       product.title = title;
       product.price = price;
       product.author = author;
@@ -82,12 +78,20 @@ exports.setEditProduct = (req, res, next) => {
     .then((result) => {
       console.log("Updated product");
       res.redirect("/admin/edit-delete-product");
+    })
+    .catch((err) => {
+      console.log(err);
+      req.flash("error", err);
+      res.redirect("/");
     });
 };
 
 exports.deleteProduct = (req, res, next) => {
   const prodID = req.params.productID;
-  Product.deleteOne({ _id: new mongoDB.ObjectID(prodID) }).then(() => {
+  Product.deleteOne({
+    _id: new mongoDB.ObjectID(prodID),
+    userID: req.user._id,
+  }).then(() => {
     res.redirect("/admin/edit-delete-product");
   });
 };

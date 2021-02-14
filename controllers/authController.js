@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const mongoDB = require("mongodb");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -68,6 +69,9 @@ exports.postSignUp = (req, res, next) => {
         );
         res.redirect("/signup");
       }
+      if (pwd !== confirmedPwd) {
+        throw "Password's dont match. Please check again";
+      }
       return bcrypt.hash(pwd, 10);
     })
     .then((hashedPwd) => {
@@ -118,7 +122,7 @@ exports.postResetPwd = (req, res, next) => {
           throw "This email does not exist, please enter a valid email ID";
         }
         user.resetToken = token;
-        user.resetTokenExpiration = Date.now() + 360000;
+        user.resetTokenExpiration = Date.now() + 3600000;
         return user.save();
       })
       .then((result) => {
@@ -127,7 +131,7 @@ exports.postResetPwd = (req, res, next) => {
           from: "shopProducts@gmail.com",
           subject: "Password Reset",
           html: `<p> Hi! You have requested to reset your password.
-          Please click <a href = "${process.env.BASE_URL}password-reset/${token}"> here </a></p>`,
+          Please click <a href = "${process.env.BASE_URL}new-password/${token}"> here </a></p>`,
         });
       })
       .then((sentEmail) => {
@@ -147,11 +151,57 @@ exports.postResetPwd = (req, res, next) => {
   });
 };
 
-exports.getPwdToken = (req, res, next) => {
-  console.log(req.params.token);
-  User.findOne({ resetToken: req.params.token })
+exports.getNewPwd = (req, res, next) => {
+  User.findOne({
+    resetToken: req.params.token,
+    resetTokenExpiration: { $gt: Date.now() },
+  })
     .then((user) => {
-      console.log(user);
+      if (!user) {
+        throw "An unexpected problem occured. Please try again";
+      }
+      const userID = user._id.toString();
+      res.render("../views/auth/new-password.pug", {
+        title: "Set Password",
+        userID: userID,
+        token: req.params.token,
+      });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      req.flash("error", err);
+      res.redirect("/login");
+    });
+};
+
+exports.postNewPwd = (req, res, next) => {
+  const token = req.body.token;
+  const userID = req.body.userID;
+  const password = req.body.password;
+  const confirmedPwd = req.body.confirmedPwd;
+  if (password !== confirmedPwd) {
+    req.flash("error", "Password's dont match. Please check again");
+    return res.redirect(`/new-password/${token}`);
+  }
+  bcrypt
+    .hash(password, 10)
+    .then((hashedPwd) => {
+      return User.findOne(
+        { resetToken: token },
+        { _id: new mongoDB.ObjectID(userID) }
+      ).then((user) => {
+        user.password = hashedPwd;
+
+        return user.save();
+      });
+    })
+    .then((result) => {
+      req.flash("information", "Please login again");
+      res.redirect("/login");
+    })
+    .catch((err) => {
+      console.log(err);
+      req.flash("error", err);
+      res.redirect(`/new-password/${token}`);
+    });
 };

@@ -20,7 +20,9 @@ html(lang="en")
                     li.list-item.p-2
                         a.list(href="/orders") Orders
                     li.list-item.p-2
-                        a.list(href="/admin") Admin
+                        a.list(href="/admin/edit-delete-product") Admin
+                    li.list-item.p-2
+                        a.list(href="/admin/add-product") Add Product
                     li.list-item.p-2.ml-auto
                         form(action="/logout", method="post")
                             input(type="hidden", name="_csrf" value = `${csrfToken}`)
