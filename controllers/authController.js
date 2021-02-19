@@ -4,6 +4,8 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const mongoDB = require("mongodb");
+const { validationResult } = require("express-validator");
+const saltRounds = 10;
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -12,6 +14,7 @@ const transporter = nodemailer.createTransport({
     pass: `${process.env.EMAIL_PASSWORD}`,
   },
 });
+
 exports.getlogin = (req, res, next) => {
   req.session.isLoggedIn = false;
   req.session.user = null;
@@ -21,27 +24,27 @@ exports.getlogin = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  const userEmail = req.body.email;
+  const err = validationResult(req);
+  if (!err.isEmpty()) {
+    const error = err.errors[0].msg;
+    req.flash("error", error);
+    return res.redirect("/login");
+  }
   const pwd = req.body.password;
-  User.findOne({ email: userEmail })
-    .then((user) => {
-      if (!user) {
-        req.flash("error", "Invalid email. Please try again");
-        return res.redirect("/login");
+  bcrypt
+    .compare(pwd, user.password)
+    .then((result) => {
+      if (result) {
+        req.session.isLoggedIn = true;
+        req.session.user = user;
+        return req.session.save((err) => {
+          console.log(err);
+          res.redirect("/");
+        });
+      } else {
+        req.flash("error", "Invalid password. Please try again");
+        res.redirect("/login");
       }
-      bcrypt.compare(pwd, user.password).then((result) => {
-        if (result) {
-          req.session.isLoggedIn = true;
-          req.session.user = user;
-          return req.session.save((err) => {
-            console.log(err);
-            res.redirect("/");
-          });
-        } else {
-          req.flash("error", "Invalid password. Please try again");
-          res.redirect("/login");
-        }
-      });
     })
     .catch((err) => console.log(err));
 };
@@ -59,21 +62,14 @@ exports.postSignUp = (req, res, next) => {
   const lastName = req.body.lastName;
   const email = req.body.email;
   const pwd = req.body.password;
-  const confirmedPwd = req.body.confirmedPwd;
-  User.findOne({ email: email })
-    .then((user) => {
-      if (user) {
-        req.flash(
-          "error",
-          "Email exists already. Please pick a different one."
-        );
-        res.redirect("/signup");
-      }
-      if (pwd !== confirmedPwd) {
-        throw "Password's dont match. Please check again";
-      }
-      return bcrypt.hash(pwd, 10);
-    })
+  const err = validationResult(req);
+  if (!err.isEmpty()) {
+    const errors = err.errors[0].msg;
+    req.flash("error", errors);
+    return res.redirect("/signup");
+  }
+  bcrypt
+    .hash(pwd, saltRounds)
     .then((hashedPwd) => {
       const user = new User({
         name: firstName + " " + lastName,
