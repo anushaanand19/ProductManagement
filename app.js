@@ -59,7 +59,7 @@ app.use("/admin", adminRouter);
 app.use(shopRouter);
 
 app.use((req, res, next) => {
-  res.render("notFound/404.pug", { title: "Page Not Found" });
+  res.render("errorHandling/404.pug", { title: "Page Not Found" });
 });
 mongoose
   .connect(MONGODB_URI, {

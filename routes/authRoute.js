@@ -5,19 +5,7 @@ const authController = require("../controllers/authController");
 const User = require("../model/user");
 
 router.get("/login", authController.getlogin);
-router.post(
-  "/login",
-  body("email").custom((value) => {
-    return User.findOne({ email: value }).then((user) => {
-      if (!user) {
-        return Promise.reject("Invalid email, please check again");
-      } else {
-        return true;
-      }
-    });
-  }),
-  authController.postLogin
-);
+router.post("/login", authController.postLogin);
 router.get("/signup", authController.getSignUp);
 router.post(
   "/signup",

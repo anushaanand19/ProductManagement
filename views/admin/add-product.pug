@@ -5,7 +5,7 @@ block styles
 
 block content
     .main-content.d-flex
-        form(action="/admin/products", method="post")
+        form(action="/admin/add-product", method="post")
             .form-group.row
                 .col-sm-4.col-form-label Title
                 .col-sm-8
@@ -21,7 +21,7 @@ block content
             .form-group.row
                 .col-sm-4.col-form-label Image 
                 .col-md-8
-                    input.form-control(type="text", name="image")
+                    input.form-control(type="file", name="image")
             .form-group.row
                 .col-sm-4.col-form-label Description 
                 .col-md-8

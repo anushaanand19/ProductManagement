@@ -24,29 +24,32 @@ exports.getlogin = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  const err = validationResult(req);
-  if (!err.isEmpty()) {
-    const error = err.errors[0].msg;
-    req.flash("error", error);
-    return res.redirect("/login");
-  }
   const pwd = req.body.password;
-  bcrypt
-    .compare(pwd, user.password)
+  var userFound;
+  User.findOne({ email: req.body.email })
+    .then((user) => {
+      if (!user) {
+        throw "Invalid email";
+      }
+      userFound = user;
+      return bcrypt.compare(pwd, user.password);
+    })
     .then((result) => {
       if (result) {
-        req.session.isLoggedIn = true;
-        req.session.user = user;
-        return req.session.save((err) => {
-          console.log(err);
-          res.redirect("/");
+        req.session.save(() => {
+          req.session.isLoggedIn = true;
+          req.session.user = userFound;
+          return res.redirect("/");
         });
       } else {
-        req.flash("error", "Invalid password. Please try again");
-        res.redirect("/login");
+        throw "Invalid Password";
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      req.flash("error", err);
+      res.redirect("/login");
+    });
 };
 
 exports.getSignUp = (req, res, next) => {

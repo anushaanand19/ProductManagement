@@ -1,5 +1,6 @@
 const mongoDB = require("mongodb");
 const Product = require("../model/product");
+const { validationResult } = require("express-validator");
 
 exports.getEditAndDeleteProducts = (req, res, next) => {
   Product.find({ userID: req.user._id })
@@ -31,7 +32,7 @@ exports.getAddProduct = (req, res, next) => {
   });
 };
 
-exports.getProducts = (req, res, next) => {
+exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
   const author = req.body.author;
   const price = req.body.price;
